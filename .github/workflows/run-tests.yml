@@ -10,7 +10,7 @@ jobs:
       matrix:
         php: [8.2, 8.3]
         laravel: [10.*, 11.*, 12.*]
-        stability: [prefer-lowest, prefer-stable]
+        stability: [prefer-stable]
         exclude:
           - laravel: 12.*
             php: 8.2

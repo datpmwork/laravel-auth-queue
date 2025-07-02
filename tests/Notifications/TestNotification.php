@@ -2,10 +2,10 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Notifications;
 
-use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
 
 class TestNotification extends Notification implements ShouldQueue
 {
