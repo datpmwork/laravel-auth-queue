@@ -2,11 +2,11 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Listeners;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Events\Dispatcher;
 
 class TestEventSubscriber implements ShouldQueue
 {
@@ -14,12 +14,12 @@ class TestEventSubscriber implements ShouldQueue
 
     public function subscribe(Dispatcher $dispatcher)
     {
-        $dispatcher->listen('eloquent.updated: ' . User::class, [self::class, 'onUserUpdated']);
+        $dispatcher->listen('eloquent.updated: '.User::class, [self::class, 'onUserUpdated']);
     }
 
     public function onUserUpdated(User $user)
     {
-        logger()->info('Auth ID: '. auth()->id());
+        logger()->info('Auth ID: '.auth()->id());
         logger()->info('Auth Check: '.auth()->check());
     }
 }

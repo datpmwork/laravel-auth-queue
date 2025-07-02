@@ -2,14 +2,11 @@
 
 namespace DatPM\LaravelAuthQueue\Middlewares;
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class RestoreAuthenticatedContextMiddleware
 {
-    /**
-     * @var
-     */
     protected $authUser;
 
     public function __construct($authUser)
@@ -23,7 +20,7 @@ class RestoreAuthenticatedContextMiddleware
 
         $guard = auth();
 
-        if (!empty($this->authUser)) {
+        if (! empty($this->authUser)) {
             $guard->setUser($this->authUser);
         }
 

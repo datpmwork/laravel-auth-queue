@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Schema;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
 use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {
@@ -35,7 +35,7 @@ it('preserves auth context when Job is dispatched', function () {
 
     // Arrange
     $user = User::create([
-        'name'  => 'Test User',
+        'name' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
@@ -65,7 +65,7 @@ it('preserves auth context when Job is executed', function () {
 
     // Arrange
     $user = User::create([
-        'name'  => 'Test User',
+        'name' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
@@ -77,7 +77,7 @@ it('preserves auth context when Job is executed', function () {
 
     expect(DB::table('jobs')->count())->toBe(2);
 
-    # Reset Auth to prevent reuse auth data of the above API
+    // Reset Auth to prevent reuse auth data of the above API
     auth()->guard()->forgetUser();
 
     $this->artisan('queue:work --once');
@@ -88,14 +88,14 @@ it('preserves auth context when Job is executed', function () {
         ->once();
 
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth Check: 1")
+        ->with('Auth Check: 1')
         ->once();
 
     $this->artisan('queue:work --once');
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->once();
 
     $loggerSpy->shouldHaveReceived('info')
