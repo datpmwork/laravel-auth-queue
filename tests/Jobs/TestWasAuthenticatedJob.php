@@ -2,11 +2,11 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Jobs;
 
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 
 class TestWasAuthenticatedJob implements ShouldQueue
 {
@@ -14,7 +14,7 @@ class TestWasAuthenticatedJob implements ShouldQueue
 
     public function handle()
     {
-        logger()->info('Auth ID: '. auth()->id());
+        logger()->info('Auth ID: '.auth()->id());
         logger()->info('Auth Check: '.auth()->check());
     }
 }

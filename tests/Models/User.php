@@ -2,9 +2,9 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Models;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Spatie\LaravelPackageTools\Concerns\Package\HasRoutes;
 
 class User extends Authenticatable

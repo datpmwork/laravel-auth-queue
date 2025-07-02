@@ -2,12 +2,12 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Controllers;
 
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Tests\Notifications\TestNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
-use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
-use DatPM\LaravelAuthQueue\Tests\Notifications\TestNotification;
-use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
 
 class TestController extends Controller
 {
@@ -21,7 +21,7 @@ class TestController extends Controller
 
     public function sendNotification(): JsonResponse
     {
-        $notification = new TestNotification();
+        $notification = new TestNotification;
         User::query()->first()->notify($notification);
 
         return response()->json(['status' => 'dispatched notification']);

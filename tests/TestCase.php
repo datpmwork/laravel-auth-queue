@@ -2,12 +2,12 @@
 
 namespace DatPM\LaravelAuthQueue\Tests;
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
-use Orchestra\Testbench\TestCase as Orchestra;
+use DatPM\LaravelAuthQueue\LaravelAuthQueueServiceProvider;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use DatPM\LaravelAuthQueue\LaravelAuthQueueServiceProvider;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+use Orchestra\Testbench\TestCase as Orchestra;
 
 /**
  * @method \Illuminate\Foundation\Testing\TestCase actingAs(Authenticatable $user, string|null $guard = null)
@@ -44,7 +44,7 @@ class TestCase extends Orchestra
         ]);
 
         // Make sure the jobs table exists
-        if (!Schema::hasTable('jobs')) {
+        if (! Schema::hasTable('jobs')) {
             Schema::create('jobs', function ($table) {
                 $table->bigIncrements('id');
                 $table->string('queue')->index();
@@ -56,7 +56,7 @@ class TestCase extends Orchestra
             });
         }
 
-        if (!Schema::hasTable('notifications')) {
+        if (! Schema::hasTable('notifications')) {
             Schema::create('notifications', function (Blueprint $table) {
                 $table->uuid('id')->primary();
                 $table->string('type');

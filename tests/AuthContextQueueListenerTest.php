@@ -1,15 +1,15 @@
 <?php
 
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Events\CallQueuedListener;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use Illuminate\Events\CallQueuedListener;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {
@@ -38,7 +38,7 @@ it('preserves auth context when Listener is dispatched', function () {
 
     // Arrange
     $user = User::create([
-        'name'  => 'Test User',
+        'name' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
@@ -67,7 +67,7 @@ it('preserves auth context when Listener is executed', function () {
 
     // Arrange
     $user = User::create([
-        'name'  => 'Test User',
+        'name' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
@@ -79,7 +79,7 @@ it('preserves auth context when Listener is executed', function () {
 
     expect(DB::table('jobs')->count())->toBe(1);
 
-    # Reset Auth to prevent reuse auth data of the above API
+    // Reset Auth to prevent reuse auth data of the above API
     auth()->guard()->forgetUser();
 
     $this->artisan('queue:work --once');
@@ -100,7 +100,7 @@ it('handles unauthenticated requests correctly', function () {
 
     // Arrange
     User::create([
-        'name'  => 'Test User',
+        'name' => 'Test User',
         'email' => 'test@example.com',
     ]);
 
