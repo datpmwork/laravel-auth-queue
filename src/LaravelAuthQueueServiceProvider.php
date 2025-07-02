@@ -3,11 +3,10 @@
 namespace DatPM\LaravelAuthQueue;
 
 use Illuminate\Support\Facades\Auth;
-use Spatie\LaravelPackageTools\Package;
+use Illuminate\Support\ServiceProvider;
 use DatPM\LaravelAuthQueue\Guards\KernelGuard;
-use Spatie\LaravelPackageTools\PackageServiceProvider;
 
-class LaravelAuthQueueServiceProvider extends PackageServiceProvider
+class LaravelAuthQueueServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -28,15 +27,5 @@ class LaravelAuthQueueServiceProvider extends PackageServiceProvider
             'driver' => 'kernel',
             'provider' => config("auth.guards.{$defaultGuard}.provider"),
         ]]);
-    }
-
-    public function configurePackage(Package $package): void
-    {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
-        $package->name('laravel-queueable-auth-context');
     }
 }
