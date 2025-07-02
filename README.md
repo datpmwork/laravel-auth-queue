@@ -14,6 +14,11 @@ auth() manager when the job is being handled.
 This is particularly useful when you need to maintain user context across
 asynchronous operations.
 
+## Requirements
+
+- PHP ^8.2
+- Laravel 10.x|11.x|12.x
+
 ## Support us
 
 You can support this project via [GitHub Sponsors](https://github.com/sponsors/datpmwork).
