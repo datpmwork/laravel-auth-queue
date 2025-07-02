@@ -2,9 +2,9 @@
 
 namespace DatPM\LaravelAuthQueue;
 
+use DatPM\LaravelAuthQueue\Guards\KernelGuard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
-use DatPM\LaravelAuthQueue\Guards\KernelGuard;
 
 class LaravelAuthQueueServiceProvider extends ServiceProvider
 {
