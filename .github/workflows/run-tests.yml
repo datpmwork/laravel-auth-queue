@@ -13,6 +13,9 @@ jobs:
         stability: [prefer-stable]
         exclude:
           # Laravel 11 requires PHP 8.2+
+          - laravel: 10.*
+            php: 8.0
+          # Laravel 11 requires PHP 8.2+
           - laravel: 11.*
             php: 8.0
           - laravel: 11.*
