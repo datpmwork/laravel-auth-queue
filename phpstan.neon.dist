@@ -6,8 +6,8 @@ parameters:
     paths:
         - src
         - config
-    excludePaths:
-        - tests/*
+    ignoreErrors:
+        - '#Trait .* is used zero times and is not analysed#'
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
