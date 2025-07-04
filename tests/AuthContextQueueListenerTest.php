@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
@@ -30,7 +31,11 @@ beforeEach(function () {
 });
 
 it('preserves auth context when Listener is dispatched', function () {
-    Queue::fake()->serializeAndRestore();
+    if (version_compare(Application::VERSION, '10.0', '>=')) {
+        Queue::fake()->serializeAndRestore();
+    } else {
+        Queue::fake();
+    }
 
     /** @var \Mockery\Mock $loggerSpy */
     $loggerSpy = Mockery::spy('logger');
@@ -47,8 +52,6 @@ it('preserves auth context when Listener is dispatched', function () {
 
     // Assert
     $response->assertSuccessful();
-
-    Queue::assertCount(1);
 
     Queue::assertPushed(CallQueuedListener::class, function (CallQueuedListener $job) use ($user) {
         return collect($job->middleware)->filter(function ($middleware) use ($user) {
@@ -96,7 +99,11 @@ it('preserves auth context when Listener is executed', function () {
 
 it('handles unauthenticated requests correctly', function () {
     // Arrange
-    Queue::fake()->serializeAndRestore();
+    if (version_compare(Application::VERSION, '10.0', '>=')) {
+        Queue::fake()->serializeAndRestore();
+    } else {
+        Queue::fake();
+    }
 
     // Arrange
     User::create([

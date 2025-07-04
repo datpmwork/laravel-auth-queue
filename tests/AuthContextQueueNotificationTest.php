@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Foundation\Application;
 use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
@@ -27,7 +28,11 @@ beforeEach(function () {
 });
 
 it('preserves auth context when Notification is dispatched', function () {
-    Notification::fake()->serializeAndRestore();
+    if (version_compare(Application::VERSION, '10.0', '>=')) {
+        Notification::fake()->serializeAndRestore();
+    } else {
+        Notification::fake();
+    }
 
     /** @var \Mockery\Mock $loggerSpy */
     $loggerSpy = Mockery::spy('logger');
@@ -86,7 +91,11 @@ it('preserves auth context when Notification is executed', function () {
 
 it('handles unauthenticated requests correctly', function () {
     // Arrange
-    Notification::fake()->serializeAndRestore();
+    if (version_compare(Application::VERSION, '10.0', '>=')) {
+        Notification::fake()->serializeAndRestore();
+    } else {
+        Notification::fake();
+    }
 
     // Arrange
     $user = User::create([
