@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use Illuminate\Events\CallQueuedListener;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;

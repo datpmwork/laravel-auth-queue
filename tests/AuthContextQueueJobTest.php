@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
 use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;

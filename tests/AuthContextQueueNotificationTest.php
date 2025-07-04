@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Foundation\Application;
 use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use DatPM\LaravelAuthQueue\Tests\Notifications\TestNotification;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
