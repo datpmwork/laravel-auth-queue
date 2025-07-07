@@ -39,9 +39,10 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
 
-      - name: Remove pest-plugin-arch for PHP 8.0
-        if: matrix.php == '8.0'
-        run: composer remove pestphp/pest-plugin-arch --dev --no-update
+      - name: Remove dev packages for PHP 8.0
+        run: |
+          composer remove larastan/larastan --dev --no-update
+          composer remove pestphp/pest-plugin-arch --dev --no-update
 
       - name: Install dependencies
         run: |
