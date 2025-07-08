@@ -7,12 +7,13 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
 
-class TestWasNotAuthenticatedJob implements ShouldQueue
+class TestWasAuthenticatedWithSerializesModelJob implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels, WasAuthenticated;
 
-    public function handle(): void
+    public function handle()
     {
         logger()->info('Auth ID: '.auth()->id());
         logger()->info('Auth Check: '.auth()->check());

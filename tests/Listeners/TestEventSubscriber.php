@@ -2,11 +2,11 @@
 
 namespace DatPM\LaravelAuthQueue\Tests\Listeners;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Events\Dispatcher;
 
 class TestEventSubscriber implements ShouldQueue
 {

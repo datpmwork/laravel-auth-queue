@@ -1,16 +1,16 @@
 <?php
 
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
-use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
-use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
-use Illuminate\Events\CallQueuedListener;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Events\CallQueuedListener;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
+use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
+use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {
@@ -53,12 +53,7 @@ it('preserves auth context when Listener is dispatched', function () {
     // Assert
     $response->assertSuccessful();
 
-    Queue::assertPushed(CallQueuedListener::class, function (CallQueuedListener $job) use ($user) {
-        return collect($job->middleware)->filter(function ($middleware) use ($user) {
-            return get_class($middleware) === RestoreAuthenticatedContextMiddleware::class &&
-                $middleware->getAuthUser()->getAuthIdentifier() === $user->getKey();
-        });
-    });
+    Queue::assertPushed(CallQueuedListener::class);
 });
 
 it('preserves auth context when Listener is executed', function () {
@@ -117,12 +112,7 @@ it('handles unauthenticated requests correctly', function () {
     // Assert
     $response->assertSuccessful();
 
-    Queue::assertPushed(CallQueuedListener::class, function (CallQueuedListener $job) {
-        return collect($job->middleware)->filter(function ($middleware) {
-            return get_class($middleware) === RestoreAuthenticatedContextMiddleware::class &&
-                empty($middleware->getAuthUser());
-        });
-    });
+    Queue::assertPushed(CallQueuedListener::class);
 });
 
 afterEach(function () {

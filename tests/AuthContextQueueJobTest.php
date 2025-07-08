@@ -1,15 +1,18 @@
 <?php
 
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
-use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
-use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
-use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Queue\SerializesModels;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasNotAuthenticatedJob;
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedExtendedJob;
+use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
+use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedWithSerializesModelJob;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {
@@ -50,13 +53,10 @@ it('preserves auth context when Job is dispatched', function () {
     // Assert
     $response->assertSuccessful();
 
-    Queue::assertPushed(TestWasAuthenticatedJob::class, function (TestWasAuthenticatedJob $job) use ($user) {
-        return collect($job->middleware)->filter(function ($middleware) use ($user) {
-            return get_class($middleware) === RestoreAuthenticatedContextMiddleware::class &&
-                $middleware->getAuthUser()->getAuthIdentifier() === $user->getKey();
-        });
-    });
+    Queue::assertPushed(TestWasAuthenticatedJob::class, 1);
     Queue::assertPushed(TestWasNotAuthenticatedJob::class, 1);
+    Queue::assertPushed(TestWasAuthenticatedWithSerializesModelJob::class, 1);
+    Queue::assertPushed(TestWasAuthenticatedExtendedJob::class, 1);
 });
 
 it('preserves auth context when Job is executed', function () {
@@ -78,11 +78,10 @@ it('preserves auth context when Job is executed', function () {
     // Assert
     $response->assertSuccessful();
 
-    expect(DB::table('jobs')->count())->toBe(2);
+    expect(DB::table('jobs')->count())->toBe(4);
 
     // Reset Auth to prevent reuse auth data of the above API
     auth()->guard()->forgetUser();
-
     $this->artisan('queue:work --once');
 
     // Assert logger was called with correct values
@@ -94,11 +93,36 @@ it('preserves auth context when Job is executed', function () {
         ->with('Auth Check: 1')
         ->once();
 
+    auth()->guard()->forgetUser();
     $this->artisan('queue:work --once');
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with('Auth ID: ')
+        ->with("Auth ID: {$user->id}")
+        ->twice();
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: 1')
+        ->twice();
+
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: {$user->id}")
+        ->times(3);
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: 1')
+        ->times(3);
+
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: ")
         ->once();
 
     $loggerSpy->shouldHaveReceived('info')

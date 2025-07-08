@@ -2,17 +2,13 @@
 
 namespace DatPM\LaravelAuthQueue\Middlewares;
 
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class RestoreAuthenticatedContextMiddleware
 {
-    protected $authUser;
-
-    public function __construct($authUser)
-    {
-        $this->authUser = $authUser;
-    }
+    use SerializesModels;
 
     public function handle($command, callable $next)
     {
@@ -20,8 +16,12 @@ class RestoreAuthenticatedContextMiddleware
 
         $guard = auth();
 
-        if (! empty($this->authUser)) {
-            $guard->setUser($this->authUser);
+        $embedUserData = data_get($command->job->payload(), 'authUser');
+        if ($embedUserData) {
+            $embedUser = $this->restoreModel(unserialize($embedUserData));
+            if ($embedUser instanceof Authenticatable) {
+                $guard->setUser($embedUser);
+            }
         }
 
         $response = $next($command);
@@ -29,13 +29,5 @@ class RestoreAuthenticatedContextMiddleware
         $guard->forgetUser();
 
         return $response;
-    }
-
-    /**
-     * @return Authenticatable|null
-     */
-    public function getAuthUser()
-    {
-        return $this->authUser;
     }
 }

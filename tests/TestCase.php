@@ -2,12 +2,12 @@
 
 namespace DatPM\LaravelAuthQueue\Tests;
 
-use DatPM\LaravelAuthQueue\LaravelAuthQueueServiceProvider;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Orchestra\Testbench\TestCase as Orchestra;
+use Illuminate\Database\Eloquent\Factories\Factory;
+use DatPM\LaravelAuthQueue\LaravelAuthQueueServiceProvider;
 
 /**
  * @method \Illuminate\Foundation\Testing\TestCase actingAs(Authenticatable $user, string|null $guard = null)

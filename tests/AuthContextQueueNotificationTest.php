@@ -1,15 +1,15 @@
 <?php
 
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
-use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
-use DatPM\LaravelAuthQueue\Tests\Models\User;
-use DatPM\LaravelAuthQueue\Tests\Notifications\TestNotification;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Notification;
+use DatPM\LaravelAuthQueue\Tests\Models\User;
+use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
+use DatPM\LaravelAuthQueue\Tests\Notifications\TestNotification;
+use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {
