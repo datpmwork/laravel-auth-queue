@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Queue\SerializesModels;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Jobs\TestWasAuthenticatedJob;
@@ -122,7 +121,7 @@ it('preserves auth context when Job is executed', function () {
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->once();
 
     $loggerSpy->shouldHaveReceived('info')

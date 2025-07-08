@@ -11,6 +11,6 @@ trait WasAuthenticated
      */
     public function middleware()
     {
-        return [new RestoreAuthenticatedContextMiddleware()];
+        return [new RestoreAuthenticatedContextMiddleware];
     }
 }
