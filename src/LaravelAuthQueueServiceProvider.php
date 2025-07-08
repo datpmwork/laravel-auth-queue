@@ -32,8 +32,8 @@ class LaravelAuthQueueServiceProvider extends ServiceProvider
         ]]);
 
         Queue::createPayloadUsing(function ($connectionName, $queue, $payload) {
-            # Skip attaching authUser when the job does not use WasAuthenticated Trait
-            if (!in_array(WasAuthenticated::class, class_uses_recursive($payload['displayName']))) {
+            // Skip attaching authUser when the job does not use WasAuthenticated Trait
+            if (! in_array(WasAuthenticated::class, class_uses_recursive($payload['displayName']))) {
                 return [];
             }
 

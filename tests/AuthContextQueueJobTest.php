@@ -156,7 +156,7 @@ it('preserves auth context (null) when Job is executed', function () {
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->once();
 
     $loggerSpy->shouldHaveReceived('info')
@@ -168,7 +168,7 @@ it('preserves auth context (null) when Job is executed', function () {
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->twice();
 
     $loggerSpy->shouldHaveReceived('info')
@@ -180,7 +180,7 @@ it('preserves auth context (null) when Job is executed', function () {
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->times(3);
 
     $loggerSpy->shouldHaveReceived('info')
@@ -192,7 +192,7 @@ it('preserves auth context (null) when Job is executed', function () {
 
     // Assert logger was called with correct values
     $loggerSpy->shouldHaveReceived('info')
-        ->with("Auth ID: ")
+        ->with('Auth ID: ')
         ->times(4);
 
     $loggerSpy->shouldHaveReceived('info')
