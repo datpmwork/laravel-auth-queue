@@ -10,7 +10,6 @@ use Illuminate\Events\CallQueuedListener;
 use DatPM\LaravelAuthQueue\Tests\Models\User;
 use DatPM\LaravelAuthQueue\Tests\Controllers\TestController;
 use DatPM\LaravelAuthQueue\Tests\Listeners\TestEventSubscriber;
-use DatPM\LaravelAuthQueue\Middlewares\RestoreAuthenticatedContextMiddleware;
 
 beforeEach(function () {
     Schema::create('users', function ($table) {

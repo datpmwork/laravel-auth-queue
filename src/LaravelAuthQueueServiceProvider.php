@@ -33,6 +33,7 @@ class LaravelAuthQueueServiceProvider extends ServiceProvider
         Queue::createPayloadUsing(function () {
             $user = auth()->user();
             $userPayload = new ModelIdentifier(get_class($user), $user->getQueueableId(), [], $user->getQueueableConnection());
+
             return [
                 'authUser' => serialize($userPayload),
             ];
