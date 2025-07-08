@@ -130,6 +130,77 @@ it('preserves auth context when Job is executed', function () {
         ->once();
 });
 
+it('preserves auth context (null) when Job is executed', function () {
+    Queue::setDefaultDriver('database');
+
+    /** @var \Mockery\Mock $loggerSpy */
+    $loggerSpy = Mockery::spy('logger');
+    $this->app->instance('log', $loggerSpy);
+
+    // Arrange
+    $user = User::create([
+        'name' => 'Test User',
+        'email' => 'test@example.com',
+    ]);
+
+    // Act
+    $response = $this->postJson('/test/dispatch-job');
+
+    // Assert
+    $response->assertSuccessful();
+
+    expect(DB::table('jobs')->count())->toBe(4);
+
+    // Reset Auth to prevent reuse auth data of the above API
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: ")
+        ->once();
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: ')
+        ->once();
+
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: ")
+        ->twice();
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: ')
+        ->twice();
+
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: ")
+        ->times(3);
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: ')
+        ->times(3);
+
+    auth()->guard()->forgetUser();
+    $this->artisan('queue:work --once');
+
+    // Assert logger was called with correct values
+    $loggerSpy->shouldHaveReceived('info')
+        ->with("Auth ID: ")
+        ->times(4);
+
+    $loggerSpy->shouldHaveReceived('info')
+        ->with('Auth Check: ')
+        ->times(4);
+});
+
 it('handles unauthenticated requests correctly', function () {
     // Arrange
     if (version_compare(Application::VERSION, '10.0', '>=')) {

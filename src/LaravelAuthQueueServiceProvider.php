@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use DatPM\LaravelAuthQueue\Guards\KernelGuard;
 use Illuminate\Contracts\Database\ModelIdentifier;
+use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
 
 class LaravelAuthQueueServiceProvider extends ServiceProvider
 {
@@ -30,8 +31,17 @@ class LaravelAuthQueueServiceProvider extends ServiceProvider
             'provider' => config("auth.guards.{$defaultGuard}.provider"),
         ]]);
 
-        Queue::createPayloadUsing(function () {
+        Queue::createPayloadUsing(function ($connectionName, $queue, $payload) {
+            # Skip attaching authUser when the job does not use WasAuthenticated Trait
+            if (!in_array(WasAuthenticated::class, class_uses_recursive($payload['displayName']))) {
+                return [];
+            }
+
             $user = auth()->user();
+            if (empty($user)) {
+                return [];
+            }
+
             $userPayload = new ModelIdentifier(get_class($user), $user->getQueueableId(), [], $user->getQueueableConnection());
             return [
                 'authUser' => serialize($userPayload),

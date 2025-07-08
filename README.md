@@ -16,8 +16,8 @@ asynchronous operations.
 
 ## Requirements
 
-- PHP ^8.2
-- Laravel 10.x|11.x|12.x
+- PHP ^7.4 | > 8.0
+- Laravel 9.x | 10.x | 11.x | 12.x
 
 ## Support us
 
@@ -96,14 +96,6 @@ class SampleSubscriber implements ShouldQueue
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security Vulnerabilities
-
-Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
 ## Credits
 
