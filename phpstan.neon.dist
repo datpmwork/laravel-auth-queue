@@ -6,7 +6,8 @@ parameters:
     paths:
         - src
         - config
-        - database
+    ignoreErrors:
+        - '#Trait .* is used zero times and is not analysed#'
     tmpDir: build/phpstan
     checkOctaneCompatibility: true
     checkModelProperties: true
