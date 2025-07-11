@@ -3,17 +3,24 @@
 namespace DatPM\LaravelAuthQueue;
 
 use Illuminate\Queue\Queue;
+use Illuminate\Queue\SyncQueue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\ServiceProvider;
 use DatPM\LaravelAuthQueue\Guards\KernelGuard;
 use Illuminate\Contracts\Database\ModelIdentifier;
 use DatPM\LaravelAuthQueue\Traits\WasAuthenticated;
+use Illuminate\Support\Facades\Queue as QueueManager;
 
 class LaravelAuthQueueServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         Queue::createPayloadUsing(function ($connectionName, $queue, $payload) {
+            // Ignore adding extra payload for Sync Queue
+            if (QueueManager::connection($connectionName) instanceof SyncQueue) {
+                return [];
+            }
+
             // Skip attaching authUser when the job does not use WasAuthenticated Trait
             if (! in_array(WasAuthenticated::class, class_uses_recursive($payload['displayName']))) {
                 return [];

@@ -56,7 +56,7 @@ it('preserves auth context when Listener is dispatched', function () {
 });
 
 it('preserves auth context when Listener is executed', function () {
-    Queue::setDefaultDriver('database');
+    Queue::setDefaultDriver('sync');
 
     /** @var \Mockery\Mock $loggerSpy */
     $loggerSpy = Mockery::spy('logger');
